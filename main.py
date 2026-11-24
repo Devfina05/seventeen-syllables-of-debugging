@@ -37,11 +37,18 @@ def count_syllables(line):
     """Count syllables from the word table above."""
     total = 0
     for word in line.split():
-        total += SYLLABLES[word.lower()]
+        key = word.lower()
+        if key not in SYLLABLES:
+            raise SystemExit(
+                "no syllable count for word %r in line %r" % (word, line)
+            )
+        total += SYLLABLES[key]
     return total
 
 
 def main():
+    if len(HAIKU) != 3:
+        raise SystemExit("haiku must be exactly 3 lines, got %d" % len(HAIKU))
     lines = []
     for line, expected in HAIKU:
         counted = count_syllables(line)
